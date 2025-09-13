@@ -30,7 +30,7 @@ tema_post = 'Consumo de fruta en bebés'
 
 # Parámetros y keys para la llamada a la API
 url = 'https://api.search.brave.com/res/v1/web/search'
-token = 'BSAqXcvbG9ti6YpBFtpOHjGjUsowb-L'
+token = TOKEN
 query = f'site:aeped.es {tema_post}'
 
 # Headers de la consulta
@@ -122,16 +122,16 @@ El reflejo de extrusión es un reflejo que tienen los lactantes para expulsar co
 
 # Parámetro para llamar a uno u otro cuando se ejecute el código
 gemini = 0
-GPT = 0
+GPT = 1
 
 # Gemini:
-if gemini = 1:
+if gemini == 1:
     genai.configure(api_key="API_KEY")
     model = genai.GenerativeModel('gemini-1.5-flash')        
     response_gemini = model.generate_content(prompt).text
 
-if GPT = 1:
-    client = OpenAI(api_key = os.getenv("ChatGPT_KEY"))
+if GPT == 1:
+    client = OpenAI(api_key = KEY)
     response_gtp = client.chat.completions.create(
       model="gpt-4o-mini",
       messages=[{"role": "user", "content": prompt}]
