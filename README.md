@@ -13,8 +13,7 @@ Posteriormente, y previa validación del contenido por parte de un profesional, 
 Esta documentación proporciona una visión general del proyecto, su estructura y cómo utilizar sus componentes principales.
 
 
-'''
-```text
+```bash
 pedIAtria/
  ├─ streamlit/
  │    ├─ app.py
@@ -22,8 +21,7 @@ pedIAtria/
  └─ Docs/
       └─ source/
           └─ conf.py
-
-'''
+```
 
 Para la generación de la documentación:
 
