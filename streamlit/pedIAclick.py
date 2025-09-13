@@ -1,36 +1,23 @@
-#########################################################################################################################
-##################################################### pedIAclick ########################################################
-#########################################################################################################################
-############################################## Fecha de creación: 20250911 ##############################################
-############################################ Fecha de modificación: 20250913 ############################################
-############################################# Autores: Jorge Hierro Francoy #############################################
-#############################################      y Javier Miranda Pascual #############################################
-#########################################################################################################################
+#----------------------------
+# Fecha de creación: 20250911 
+# Fecha de modificación: 20250913
+# Autores: 
+# - Jorge Hierro Francoy 
+# - Javier Miranda Pascual
+#----------------------------
 
-######################################################## LIBRERÍAS ######################################################
-#########################################################################################################################
+# LIBRERÍAS
 import requests
 import streamlit as st
 from openai import OpenAI
 import os
 
-
-#########################################################################################################################
-# CONFIG
-#########################################################################################################################
-BRAVE_TOKEN = os.getenv("BRAVE_TOKEN")  # guarda tu token en variable de entorno
-OPENAI_KEY = os.getenv("OPENAI_API_KEY")
-
-# Inicializamos cliente GPT
-client = OpenAI(api_key=OPENAI_KEY)
-
-
 #########################################################################################################################
 # FUNCIONES AUXILIARES
-#########################################################################################################################
 
-def buscar_info_brave(tema_post: str) -> str:
+def buscar_info_brave(tema_post: str, BRAVE_TOKEN) -> str:
     """Busca información en la web de la AEP usando Brave API y devuelve un texto resumen."""
+
     url = 'https://api.search.brave.com/res/v1/web/search'
     query = f'site:aeped.es {tema_post}'
     
@@ -62,8 +49,7 @@ def buscar_info_brave(tema_post: str) -> str:
     
     return llm_text
 
-
-def generar_post(tema_post: str, llm_text: str) -> str:
+def generar_post(tema_post: str, llm_text: str, client) -> str:
     """Genera el post con GPT usando el prompt definido."""
     prompt = f"""
 Rol:
@@ -99,28 +85,3 @@ Información adicional (usa solo si es relevante; puede contener partes no relac
         messages=[{"role": "user", "content": prompt}]
     )
     return response.choices[0].message.content
-
-
-#########################################################################################################################
-# INTERFAZ STREAMLIT
-#########################################################################################################################
-
-st.set_page_config(page_title="pedIAclick", page_icon="👶", layout="centered")
-
-st.title("👶 pedIAclick")
-st.write("Generador de posts para redes sociales basado en información de la AEP.")
-
-tema_post = st.text_input("Introduce el tema del post (ej. 'Consumo de fruta en bebés')")
-
-if st.button("Generar post"):
-    if not tema_post:
-        st.warning("Por favor, escribe un tema antes de generar el post.")
-    else:
-        with st.spinner("🔎 Buscando información en la AEP..."):
-            llm_text = buscar_info_brave(tema_post)
-        
-        with st.spinner("✍️ Creando post con GPT..."):
-            post = generar_post(tema_post, llm_text)
-        
-        st.subheader("📌 Post generado:")
-        st.write(post)
