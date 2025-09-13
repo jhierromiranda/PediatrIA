@@ -18,50 +18,45 @@ import os
 import ast
 
 
-
 #########################################################################################################################
 # Parte 1: EXTRACCIÓN DE INFORMACION DE LA PÁGINA WEB DE LA ASOCIACIÓN ESPAÑOLA DE PEDIATRIA A TRAVÉS DE LA API DE BRAVE
 #########################################################################################################################
 
 
 # Cogemos el tema indicado como input (de momento lo hacemos a mano)
-tema_post = 'Consumo de fruta en bebés'
+tema_post = "Consumo de fruta en bebés"
 
 
 # Parámetros y keys para la llamada a la API
+=======
 url = 'https://api.search.brave.com/res/v1/web/search'
 token = TOKEN
 query = f'site:aeped.es {tema_post}'
 
 # Headers de la consulta
 headers = {
-"Accept": "application/json",
-"Accept-Encoding": "gzip",
-"x-subscription-token": token
+    "Accept": "application/json",
+    "Accept-Encoding": "gzip",
+    "x-subscription-token": token,
 }
 
 # Parámetros de la consulta
-params = {
-    'q': query,
-    "extra_snippets": "true"
-}
+params = {"q": query, "extra_snippets": "true"}
 
 
 # Llamada a Brave
-response = requests.get(url,  headers = headers, params = params).json()
+response = requests.get(url, headers=headers, params=params).json()
 
 
 # Recolectamos resultados
-if 'results' in response['web'] and len(response['web']['results']) > 0:
+if "results" in response["web"] and len(response["web"]["results"]) > 0:
     llm_text = ""
-    llm_text += f'{query}. '
-    for j in range(len(response['web']['results'])):
-        if 'extra_snippets' in response['web']['results'][j]:
+    llm_text += f"{query}. "
+    for j in range(len(response["web"]["results"])):
+        if "extra_snippets" in response["web"]["results"][j]:
             llm_text += f"Descripcion {j+1}: {response['web']['results'][j]['title']} {response['web']['results'][j]['extra_snippets']}. "
         else:
             llm_text += f"Descripcion {j+1}: {response['web']['results'][j]['title']}. "
-
-
 
 
 #########################################################################################################################
@@ -70,9 +65,9 @@ if 'results' in response['web'] and len(response['web']['results']) > 0:
 
 # Prompt:
 
-prompt  = f"""
+prompt = f"""
 Rol:
-Eres un Community Manager experto en comunicación en salud pediátrica. Gestionas una cuenta de redes sociales llamada Pediaclick, que utiliza dos personajes:
+Eres un Community Manager experto en comunicación en salud pediátrica. Gestionas una cuenta de redes sociales llamada pedIAtria, que utiliza dos personajes:
 - SuperVita: superhéroe de Playmobil.
 - Pediatra Chus: pediatra de Playmobil.
 
@@ -123,9 +118,7 @@ El reflejo de extrusión es un reflejo que tienen los lactantes para expulsar co
 # Parámetro para llamar a uno u otro cuando se ejecute el código
 gemini = 0
 GPT = 1
-
-# Gemini:
-if gemini == 1:
+=======
     genai.configure(api_key="API_KEY")
     model = genai.GenerativeModel('gemini-1.5-flash')        
     response_gemini = model.generate_content(prompt).text
