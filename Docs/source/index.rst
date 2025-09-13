@@ -1,4 +1,5 @@
-# PediatrIA
+Documentación pedIAtria
+=======================
 
 El proyecto **pedIAtria** es una aplicación diseñada para asistir en la práctica pediátrica mediante el uso de inteligencia artificial. 
 
@@ -13,22 +14,10 @@ Posteriormente, y previa validación del contenido por parte de un profesional, 
 Esta documentación proporciona una visión general del proyecto, su estructura y cómo utilizar sus componentes principales.
 
 
-'''
-```text
-pedIAtria/
- ├─ streamlit/
- │    ├─ app.py
- │    ├─ pedIAclick.py
- └─ Docs/
-      └─ source/
-          └─ conf.py
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-'''
-
-Para la generación de la documentación:
-
-1. Descargar la plantilla html corresponiente `html_theme = 'sphinx_rtd_theme'`
-2. Ir a la carpeta Docs/
-3. ejecutar en terminal `make html` 
-
-Para abrir la documentación, ejecutar en terminal: start build\html\index.html
+   pedIAclick
+   .. app No ponemos app porque no usamos funciones y no queremos que aparezca en la doc. Por otro lado, al usar variables de entorno, nos
+   .. puede dar error al generar la doc.
