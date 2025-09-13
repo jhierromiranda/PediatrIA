@@ -29,4 +29,4 @@ Para la generación de la documentación:
 2. Ir a la carpeta Docs/
 3. ejecutar en terminal `make html` 
 
-Para abrir la documentación, ejecutar en terminal: start build\html\index.html
+Para abrir la documentación, ejecutar en terminal: `start build\html\index.html`
