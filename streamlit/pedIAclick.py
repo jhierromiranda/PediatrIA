@@ -16,7 +16,16 @@ import os
 # FUNCIONES AUXILIARES
 
 def buscar_info_brave(tema_post: str, BRAVE_TOKEN) -> str:
-    """Busca información en la web de la AEP usando Brave API y devuelve un texto resumen."""
+    """
+    Busca información en la API de Brave asociada en la Asociación Española de Pediatría (AEP) para un tema dado.
+
+    Args:
+        tema_post (str): Tema sobre el que se busca información en la AEP. Lo introduce el usuario y puede ser cualquier tema relacionado con la pediatría.
+        BRAVE_TOKEN (str): Token de subscripción para la API de Brave. Variable de entorno.
+
+    Returns:
+        str: Texto con la información asociada al tema en la AEP. Si no se encuentra información, devuelve un mensaje de error.
+    """
 
     url = 'https://api.search.brave.com/res/v1/web/search'
     query = f'site:aeped.es {tema_post}'
@@ -50,7 +59,19 @@ def buscar_info_brave(tema_post: str, BRAVE_TOKEN) -> str:
     return llm_text
 
 def generar_post(tema_post: str, llm_text: str, client) -> str:
-    """Genera el post con GPT usando el prompt definido."""
+    
+    """
+    Genera un post informativo para Pediaclick basado en la información asociada a un tema en la AEP.
+
+    Args:
+        tema_post (str): Tema sobre el que se busca información en la AEP. Lo introduce el usuario y puede ser cualquier tema relacionado con la pediatría.
+        llm_text (str): Texto con la información asociada al tema en la AEP. Si no se encuentra información, devuelve un mensaje de error.
+        client (OpenAI.Client): Cliente de la API de OpenAI, que se utiliza para generar el contenido del post.
+
+    Returns:
+        str: Texto del post informativo. Si no se pudo generar el post debido a la falta de información relevante en la AEP, devuelve un mensaje de error.
+    """
+
     prompt = f"""
 Rol:
 Eres un Community Manager experto en comunicación en salud pediátrica. Gestionas una cuenta de redes sociales llamada Pediaclick, que utiliza dos personajes:
@@ -80,8 +101,12 @@ Restricciones y estilo:
 Información adicional (usa solo si es relevante; puede contener partes no relacionadas con el tema):
 {llm_text}
 """
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return response.choices[0].message.content
+    if llm_text != "No se encontró información relevante en la AEP.":
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        return response.choices[0].message.content
+    else:
+        return "No se pudo generar el post debido a la falta de información relevante en la AEP."
