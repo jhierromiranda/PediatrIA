@@ -25,7 +25,6 @@ client_images = OpenAI(api_key=OPENAI_KEY_IMAGES)
 
 st.title("👶 pedIAclick")
 st.write("Generador de posts e imágenes para redes sociales basado en la AEP.")
-import os
 
 
 tema_post = st.text_input("Introduce el tema del post (ej. 'Consumo de fruta en bebés')")
@@ -55,7 +54,7 @@ if st.button("Generar post"):
 
             st.subheader("✏️ Adapta el texto del post:")
             st.session_state.prompt_editado = st.text_area(
-                f"Puedes modificar el texto del post {os.getcwd()}:",
+                "Puedes modificar el texto del post:",
                 value=st.session_state.post_generado,
                 height=200
             )
@@ -63,7 +62,7 @@ if st.session_state.post_generado:
     if st.button("🎨 Generar imagen del post"):
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
-                ruta_imagen = "assets/referencia.jpeg"
+                ruta_imagen = "streamlit/assets/referencia.jpeg"
                 st.session_state.prompt_img = generar_prompt_imagen(st.session_state.prompt_editado, ruta_imagen)
 
                 st.subheader("✏️ Ajusta el prompt de la imagen:")
