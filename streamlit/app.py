@@ -71,7 +71,7 @@ if "imagen_generada" not in st.session_state:
     
 if st.session_state.post_generado:
     guardar_post(st.session_state.post_generado, tema_post) #Guardamos el post en git
-    git_commit_push(f"backups/post_{tema_post.replace(' ', '_')}.txt")
+    git_commit_push(f"streamlit/backups/post_{tema_post.replace(' ', '_')}.txt")
      
     ruta_imagen = "streamlit/assets/referencia.jpeg"
     st.session_state.prompt_img = generar_prompt_imagen(tema_post)
@@ -90,7 +90,7 @@ if st.session_state.post_generado:
                 
                     if image_result:
                         guardar_imagen(image_result, tema_post) #Guardamos la imagen en git
-                        git_commit_push(f"backups/imagen_{tema_post.replace(' ', '_')}.png")
+                        git_commit_push(f"streamlit/backups/imagen_{tema_post.replace(' ', '_')}.png")
                         st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
                         st.success("✅ Imagen generada con éxito")
                     else:
