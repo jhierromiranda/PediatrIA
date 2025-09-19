@@ -126,7 +126,8 @@ def generar_imagen_dalle(prompt_img: str, client_images):
             model="gpt-image-1",
             image=f,
             prompt=prompt_img,
-            size="1024x1024"
+            size="1024x1024",
+            n=1
             )
             
         image_obj = response.data[0]
