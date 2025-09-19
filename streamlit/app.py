@@ -70,8 +70,8 @@ if "imagen_generada" not in st.session_state:
     st.session_state.imagen_generada = None
     
 if st.session_state.post_generado:
-    guardar_post(st.session_state.post_generado, tema_post) #Guardamos el post en git
-    git_commit_push(f"streamlit/backups/post_{tema_post.replace(' ', '_')}.txt")
+    ruta = guardar_post(st.session_state.post_generado, tema_post)
+    git_commit_push(ruta)
      
     ruta_imagen = "streamlit/assets/referencia.jpeg"
     st.session_state.prompt_img = generar_prompt_imagen(tema_post)

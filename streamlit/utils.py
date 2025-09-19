@@ -10,12 +10,16 @@ def guardar_post(texto_post, tema_post):
     Parameters:
     texto_post (str): Texto del post a guardar.
     tema_post (str): Tema del post a guardar.
-    """
 
-    os.makedirs("streamlit/backups", exist_ok=True)  # Crea la carpeta si no existe
+    Returns:
+    str: Nombre del archivo en el que se guardó el post.
+    """
+    os.makedirs("streamlit/backups", exist_ok=True)
+    
     nombre_archivo = f"streamlit/backups/post_{tema_post.replace(' ', '_')}.txt"
     with open(nombre_archivo, "w", encoding="utf-8") as f:
         f.write(texto_post)
+    return nombre_archivo 
 
 
 def guardar_imagen(image_result, tema_post):
@@ -48,7 +52,8 @@ def git_commit_push(archivo):
     Parameters:
     archivo (str): Ruta del archivo a commitear y push.
     """
+    
+    subprocess.run(["git", "add", archivo], check=True)
+    subprocess.run(["git", "commit", "-m", f"Backup {archivo}"], check=True)
+    subprocess.run(["git", "push"], check=True)
 
-    subprocess.run(["git", "add", archivo])
-    subprocess.run(["git", "commit", "-m", f"Backup {archivo}"])
-    subprocess.run(["git", "push"])
