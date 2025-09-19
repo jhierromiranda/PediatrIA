@@ -28,7 +28,7 @@ client_images = OpenAI(api_key=OPENAI_KEY_IMAGES)
 # FUNCIONES AUXILIARES
 #########################################################################################################################
 
-def buscar_info_brave(tema_post: str) -> str:
+def buscar_info_brave(tema_post: str, BRAVE_TOKEN) -> str:
     url = 'https://api.search.brave.com/res/v1/web/search'
     query = f'site:aeped.es {tema_post}'
     
@@ -58,7 +58,7 @@ def buscar_info_brave(tema_post: str) -> str:
     return llm_text
 
 
-def generar_post(tema_post: str, llm_text: str) -> str:
+def generar_post(tema_post: str, llm_text: str, client) -> str:
     prompt = f"""
 Rol:
 Eres un Community Manager experto en comunicación en salud pediátrica. Gestionas una cuenta de redes sociales llamada Pediaclick, que utiliza dos personajes:
@@ -97,7 +97,7 @@ Crea una escena nueva basada en el tema: 'Deporte en el primer año de vida'. As
 
 
 
-def generar_imagen_dalle(prompt_img: str):
+def generar_imagen_dalle(prompt_img: str, client_images):
     try:
         with open("assets/referencia.jpeg", "rb") as f:
             response = client_images.images.edit(
