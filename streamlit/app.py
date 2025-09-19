@@ -65,6 +65,9 @@ if st.button("Generar post"):
 
 st.write("---")
 
+if "imagen_generada" not in st.session_state:
+    st.session_state.imagen_generada = None
+    
 if st.session_state.post_generado:
     ruta_imagen = "streamlit/assets/referencia.jpeg"
     st.session_state.prompt_img = generar_prompt_imagen(tema_post)
@@ -74,11 +77,12 @@ if st.session_state.post_generado:
         value=st.session_state.prompt_img,
         height=200
     )
-    if st.button("🎨 Generar imagen del post"):
+    if st.button("🎨 Generar imagen del post") and st.session_state.imagen_generada is None:
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
                 with st.spinner("🎨 Generando imagen con DALL·E..."):
                     image_result = generar_imagen_dalle(st.session_state.prompt_imagen_editado, client_images, ruta_imagen)
+                    st.session_state.imagen_generada = image_result
                 
                     if image_result:
                         st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
