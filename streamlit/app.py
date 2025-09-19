@@ -60,6 +60,9 @@ if st.button("Generar post"):
                 value=st.session_state.post_generado,
                 height=200
             )
+
+st.write("---")
+
 if st.session_state.post_generado:
     ruta_imagen = "streamlit/assets/referencia.jpeg"
     st.session_state.prompt_img = generar_prompt_imagen(tema_post)
