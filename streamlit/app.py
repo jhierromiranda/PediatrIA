@@ -10,8 +10,6 @@
 
 import streamlit as st
 from openai import OpenAI
-import base64
-import requests
 
 from pedIAclick import buscar_info_brave, generar_post, generar_prompt_imagen, generar_prompt_imagen, generar_imagen_dalle
 
@@ -68,7 +66,7 @@ if st.session_state.post_generado:
                 prompt_img = generar_prompt_imagen(st.session_state.prompt_editado, ruta_imagen)
 
                 with st.spinner("🎨 Generando imagen con DALL·E..."):
-                    image_result = generar_imagen_dalle(prompt_img)
+                    image_result = generar_imagen_dalle(prompt_img, client_images)
                 
                 if image_result:
                     st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
