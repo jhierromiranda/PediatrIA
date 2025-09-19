@@ -1,36 +1,32 @@
-#########################################################################################################################
-##################################################### pedIAclick ########################################################
-#########################################################################################################################
-############################################## Fecha de creación: 20250911 ##############################################
-############################################ Fecha de modificación: 20250913 ############################################
-############################################# Autores: Jorge Hierro Francoy #############################################
-#############################################      y Javier Miranda Pascual #############################################
-#########################################################################################################################
+#----------------------------
+# Fecha de creación: 20250911 
+# Fecha de modificación: 20250913
+# Autores: 
+# - Jorge Hierro Francoy 
+# - Javier Miranda Pascual
+#----------------------------
 
-######################################################## LIBRERÍAS ######################################################
-#########################################################################################################################
+# LIBRERÍAS
 import requests
 import streamlit as st
 from openai import OpenAI
 import os
 
-
-#########################################################################################################################
-# CONFIG
-#########################################################################################################################
-BRAVE_TOKEN = os.getenv("BRAVE_TOKEN")  # guarda tu token en variable de entorno
-OPENAI_KEY = os.getenv("OPENAI_API_KEY")
-
-# Inicializamos cliente GPT
-client = OpenAI(api_key=OPENAI_KEY)
-
-
 #########################################################################################################################
 # FUNCIONES AUXILIARES
-#########################################################################################################################
 
-def buscar_info_brave(tema_post: str) -> str:
-    """Busca información en la web de la AEP usando Brave API y devuelve un texto resumen."""
+def buscar_info_brave(tema_post: str, BRAVE_TOKEN) -> str:
+    """
+    Busca información en la API de Brave asociada en la Asociación Española de Pediatría (AEP) para un tema dado.
+
+    Args:
+        tema_post (str): Tema sobre el que se busca información en la AEP. Lo introduce el usuario y puede ser cualquier tema relacionado con la pediatría.
+        BRAVE_TOKEN (str): Token de subscripción para la API de Brave. Variable de entorno.
+
+    Returns:
+        str: Texto con la información asociada al tema en la AEP. Si no se encuentra información, devuelve un mensaje de error.
+    """
+
     url = 'https://api.search.brave.com/res/v1/web/search'
     query = f'site:aeped.es {tema_post}'
     
@@ -62,9 +58,20 @@ def buscar_info_brave(tema_post: str) -> str:
     
     return llm_text
 
+def generar_post(tema_post: str, llm_text: str, client) -> str:
+    
+    """
+    Genera un post informativo para Pediaclick basado en la información asociada a un tema en la AEP.
 
-def generar_post(tema_post: str, llm_text: str) -> str:
-    """Genera el post con GPT usando el prompt definido."""
+    Args:
+        tema_post (str): Tema sobre el que se busca información en la AEP. Lo introduce el usuario y puede ser cualquier tema relacionado con la pediatría.
+        llm_text (str): Texto con la información asociada al tema en la AEP. Si no se encuentra información, devuelve un mensaje de error.
+        client (OpenAI.Client): Cliente de la API de OpenAI, que se utiliza para generar el contenido del post.
+
+    Returns:
+        str: Texto del post informativo. Si no se pudo generar el post debido a la falta de información relevante en la AEP, devuelve un mensaje de error.
+    """
+
     prompt = f"""
 Rol:
 Eres un Community Manager experto en comunicación en salud pediátrica. Gestionas una cuenta de redes sociales llamada Pediaclick, que utiliza dos personajes:
@@ -94,33 +101,12 @@ Restricciones y estilo:
 Información adicional (usa solo si es relevante; puede contener partes no relacionadas con el tema):
 {llm_text}
 """
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
-    )
-    return response.choices[0].message.content
+    if llm_text != "No se encontró información relevante en la AEP.":
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[{"role": "user", "content": prompt}]
+        )
 
-
-#########################################################################################################################
-# INTERFAZ STREAMLIT
-#########################################################################################################################
-
-st.set_page_config(page_title="pedIAclick", page_icon="👶", layout="centered")
-
-st.title("👶 pedIAclick")
-st.write("Generador de posts para redes sociales basado en información de la AEP.")
-
-tema_post = st.text_input("Introduce el tema del post (ej. 'Consumo de fruta en bebés')")
-
-if st.button("Generar post"):
-    if not tema_post:
-        st.warning("Por favor, escribe un tema antes de generar el post.")
+        return response.choices[0].message.content
     else:
-        with st.spinner("🔎 Buscando información en la AEP..."):
-            llm_text = buscar_info_brave(tema_post)
-        
-        with st.spinner("✍️ Creando post con GPT..."):
-            post = generar_post(tema_post, llm_text)
-        
-        st.subheader("📌 Post generado:")
-        st.write(post)
+        return "No se pudo generar el post debido a la falta de información relevante en la AEP."

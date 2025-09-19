@@ -1,15 +1,21 @@
-#########################################################################################################################
-##################################################### pedIAclick ########################################################
-#########################################################################################################################
-import requests
+#----------------------------
+# Fecha de creación: 20250911 
+# Fecha de modificación: 20250913
+# Autores: 
+# - Jorge Hierro Francoy 
+# - Javier Miranda Pascual
+#----------------------------
+
+# LIBRERÍAS
+
 import streamlit as st
 from openai import OpenAI
 import base64
+import requests
 
+from pedIAclick import buscar_info_brave, generar_post
 
-#########################################################################################################################
 # CONFIG
-#########################################################################################################################
 BRAVE_TOKEN = st.secrets.get("BRAVE_TOKEN", "")
 OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
 OPENAI_KEY_IMAGES = st.secrets.get("OPENAI_API_KEY_IMAGES", "")
@@ -114,14 +120,11 @@ def generar_imagen_dalle(prompt_img: str):
         return None
 
 
-#########################################################################################################################
-# INTERFAZ STREAMLIT
-#########################################################################################################################
-
-st.set_page_config(page_title="pedIAclick", page_icon="👶", layout="centered")
+#######################################################################################################################
 
 st.title("👶 pedIAclick")
 st.write("Generador de posts e imágenes para redes sociales basado en la AEP.")
+
 
 tema_post = st.text_input("Introduce el tema del post (ej. 'Consumo de fruta en bebés')")
 
@@ -134,7 +137,7 @@ if st.button("Generar post"):
         st.warning("Por favor, escribe un tema antes de generar el post.")
     else:
         with st.spinner("🔎 Buscando información en la AEP..."):
-            llm_text = buscar_info_brave(tema_post)
+            llm_text = buscar_info_brave(tema_post, BRAVE_TOKEN)
         
         with st.spinner("✍️ Creando post con GPT..."):
             try:
