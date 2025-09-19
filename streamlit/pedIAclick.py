@@ -115,7 +115,7 @@ Información adicional (usa solo si es relevante; puede contener partes no relac
 
 def generar_prompt_imagen(texto_post: str, imagen_ref: str) -> str:
     prompt_imagen = f"""
-Crea una escena nueva basada en el tema: 'Deporte en el primer año de vida'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
+Crea una escena nueva basada en el tema: '{texto_post}'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
 """
     return prompt_imagen
 
