@@ -54,6 +54,8 @@ if st.button("Generar post"):
             st.subheader("📌 Post generado:")
             st.write(st.session_state.post_generado)
 
+            st.write("---")
+            
             st.subheader("✏️ Adapta el texto del post:")
             st.session_state.prompt_editado = st.text_area(
                 "Puedes modificar el texto del post:",
