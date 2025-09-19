@@ -45,7 +45,9 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">pedIAclick</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#pedIAclick.buscar_info_brave"><code class="docutils literal notranslate"><span class="pre">buscar_info_brave()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pedIAclick.generar_imagen_dalle"><code class="docutils literal notranslate"><span class="pre">generar_imagen_dalle()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pedIAclick.generar_post"><code class="docutils literal notranslate"><span class="pre">generar_post()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pedIAclick.generar_prompt_imagen"><code class="docutils literal notranslate"><span class="pre">generar_prompt_imagen()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -98,6 +100,26 @@
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pedIAclick.generar_imagen_dalle">
+<span class="sig-prename descclassname"><span class="pre">pedIAclick.</span></span><span class="sig-name descname"><span class="pre">generar_imagen_dalle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt_img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client_images</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pedIAclick.generar_imagen_dalle" title="Link to this definition"></a></dt>
+<dd><p>Genera una imagen basada en el prompt y la imagen de referencia.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt_img</strong> (<em>str</em>) – Prompt para generar la imagen.</p></li>
+<li><p><strong>client_images</strong> (<em>OpenAI</em>) – Cliente de la API de OpenAI para generar imágenes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>URL de la imagen generada o imagen en base64 si la API devuelve una imagen base64.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str|bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pedIAclick.generar_post">
 <span class="sig-prename descclassname"><span class="pre">pedIAclick.</span></span><span class="sig-name descname"><span class="pre">generar_post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tema_post</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">llm_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">client</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pedIAclick.generar_post" title="Link to this definition"></a></dt>
 <dd><p>Genera un post informativo para Pediaclick basado en la información asociada a un tema en la AEP.</p>
@@ -111,6 +133,26 @@
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Texto del post informativo. Si no se pudo generar el post debido a la falta de información relevante en la AEP, devuelve un mensaje de error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pedIAclick.generar_prompt_imagen">
+<span class="sig-prename descclassname"><span class="pre">pedIAclick.</span></span><span class="sig-name descname"><span class="pre">generar_prompt_imagen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texto_post</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">imagen_ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pedIAclick.generar_prompt_imagen" title="Link to this definition"></a></dt>
+<dd><p>Genera un prompt para una imagen basada en el texto del post y la imagen de referencia.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>texto_post</strong> (<em>str</em>) – Texto del post que se va a generar.</p></li>
+<li><p><strong>imagen_ref</strong> (<em>str</em>) – Imagen de referencia para la que se va a generar la escena.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Prompt para generar la imagen.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
