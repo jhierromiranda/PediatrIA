@@ -63,7 +63,7 @@ if st.session_state.post_generado:
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
                 ruta_imagen = "streamlit/assets/referencia.jpeg"
-                st.session_state.prompt_img = generar_prompt_imagen(st.session_state.prompt_editado, ruta_imagen)
+                st.session_state.prompt_img = generar_prompt_imagen(tema_post, ruta_imagen)
 
                 st.subheader("✏️ Ajusta el prompt de la imagen:")
                 st.session_state.prompt_imagen_editado = st.text_area(
