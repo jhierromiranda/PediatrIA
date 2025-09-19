@@ -170,7 +170,7 @@ def generar_imagen_dalle(prompt_img: str, client_images, ruta):
         str|bytes: URL de la imagen generada o imagen en base64 si la API devuelve una imagen base64.
     """
     try:
-        with open("assets/referencia.jpeg", "rb") as f:
+        with open(ruta, "rb") as f:
             response = client_images.images.edit(
             model="gpt-image-1",
             image=f,
