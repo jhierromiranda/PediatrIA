@@ -89,5 +89,5 @@ if st.session_state.post_generado:
             except Exception as e:
                 st.error(f"⚠️ Error al generar el prompt de imagen: {e}")
 
-                with st.expander("📖 Ver texto completo del post"):
-                    st.write(st.session_state.post_generado)
+    with st.expander("📖 Ver texto completo del post"):
+        st.write(st.session_state.post_generado)
