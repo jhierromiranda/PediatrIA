@@ -113,7 +113,7 @@ Información adicional (usa solo si es relevante; puede contener partes no relac
         return "No se pudo generar el post debido a la falta de información relevante en la AEP."
     
 
-def generar_prompt_imagen(texto_post: str, imagen_ref: str) -> str:
+def generar_prompt_imagen(texto_post: str) -> str:
     prompt_imagen = f"""
 Crea una escena nueva basada en el tema: '{texto_post}'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
 """
