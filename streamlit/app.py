@@ -52,9 +52,9 @@ if st.button("Generar post"):
             st.subheader("📌 Post generado:")
             st.write(st.session_state.post_generado)
 
-            st.subheader("✏️ Ajusta el prompt de la imagen")
+            st.subheader("✏️ Adapta el texto del post:")
             st.session_state.prompt_editado = st.text_area(
-                "Puedes modificar el texto que servirá de base para generar la imagen:",
+                "Puedes modificar el texto del post:",
                 value=st.session_state.post_generado,
                 height=200
             )
@@ -63,10 +63,17 @@ if st.session_state.post_generado:
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
                 ruta_imagen = "assets/referencia.jpeg"
-                prompt_img = generar_prompt_imagen(st.session_state.prompt_editado, ruta_imagen)
+                st.session_state.prompt_img = generar_prompt_imagen(st.session_state.prompt_editado, ruta_imagen)
+
+                st.subheader("✏️ Ajusta el prompt de la imagen:")
+                st.session_state.prompt_imagen_editado = st.text_area(
+                    "Puedes modificar el texto que servirá de base para generar la imagen:",
+                    value=st.session_state.prompt_img,
+                    height=200
+                )
 
                 with st.spinner("🎨 Generando imagen con DALL·E..."):
-                    image_result = generar_imagen_dalle(prompt_img, client_images)
+                    image_result = generar_imagen_dalle(st.session_state.prompt_imagen_editado, client_images)
                 
                 if image_result:
                     st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
