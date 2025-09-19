@@ -23,6 +23,8 @@ client_images = OpenAI(api_key=OPENAI_KEY_IMAGES)
 
 #######################################################################################################################
 
+st.set_page_config(page_title="pedIAclick", page_icon="👶", layout="centered")
+
 st.title("👶 pedIAclick")
 st.write("Generador de posts e imágenes para redes sociales basado en la AEP.")
 
@@ -59,18 +61,17 @@ if st.button("Generar post"):
                 height=200
             )
 if st.session_state.post_generado:
+    st.subheader("✏️ Ajusta el prompt de la imagen:")
+    st.session_state.prompt_imagen_editado = st.text_area(
+        "Puedes modificar el texto que servirá de base para generar la imagen:",
+        value=st.session_state.prompt_img,
+        height=200
+    )
     if st.button("🎨 Generar imagen del post"):
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
                 ruta_imagen = "streamlit/assets/referencia.jpeg"
                 st.session_state.prompt_img = generar_prompt_imagen(tema_post)
-
-                st.subheader("✏️ Ajusta el prompt de la imagen:")
-                st.session_state.prompt_imagen_editado = st.text_area(
-                    "Puedes modificar el texto que servirá de base para generar la imagen:",
-                    value=st.session_state.prompt_img,
-                    height=200
-                )
 
                 with st.spinner("🎨 Generando imagen con DALL·E..."):
                     image_result = generar_imagen_dalle(st.session_state.prompt_imagen_editado, client_images, ruta_imagen)
