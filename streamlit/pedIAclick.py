@@ -11,6 +11,7 @@ import requests
 import streamlit as st
 from openai import OpenAI
 import os
+import base64
 
 #########################################################################################################################
 # FUNCIONES AUXILIARES
@@ -110,3 +111,80 @@ Información adicional (usa solo si es relevante; puede contener partes no relac
         return response.choices[0].message.content
     else:
         return "No se pudo generar el post debido a la falta de información relevante en la AEP."
+    
+
+def generar_prompt_imagen(texto_post: str, imagen_ref: str) -> str:
+    prompt_imagen = f"""
+Crea una escena nueva basada en el tema: 'Deporte en el primer año de vida'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
+"""
+    return prompt_imagen
+
+def generar_imagen_dalle(prompt_img: str, client_images):
+    try:
+        with open("assets/referencia.jpeg", "rb") as f:
+            response = client_images.images.edit(
+            model="gpt-image-1",
+            image=f,
+            prompt=prompt_img,
+            size="1024x1024"
+            )
+            
+        image_obj = response.data[0]
+        if image_obj.url:
+            return image_obj.url
+        elif image_obj.b64_json:
+            return base64.b64decode(image_obj.b64_json)
+        else:
+            st.error("⚠️ La API no devolvió URL ni imagen base64.")
+            return None
+    except Exception as e:
+        st.error(f"⚠️ Error al generar la imagen: {e}")
+        return None
+    
+def generar_prompt_imagen(texto_post: str, imagen_ref: str) -> str:
+    """Genera un prompt para una imagen basada en el texto del post y la imagen de referencia.
+
+    Args:
+        texto_post (str): Texto del post que se va a generar.
+        imagen_ref (str): Imagen de referencia para la que se va a generar la escena.
+
+    Returns:
+        str: Prompt para generar la imagen.
+    """
+
+    prompt_imagen = f"""
+Crea una escena nueva basada en el tema: 'Deporte en el primer año de vida'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
+"""
+    return prompt_imagen
+
+
+def generar_imagen_dalle(prompt_img: str, client_images):
+    """Genera una imagen basada en el prompt y la imagen de referencia.
+
+    Args:
+        prompt_img (str): Prompt para generar la imagen.
+        client_images (OpenAI): Cliente de la API de OpenAI para generar imágenes.
+
+    Returns:
+        str|bytes: URL de la imagen generada o imagen en base64 si la API devuelve una imagen base64.
+    """
+    try:
+        with open("assets/referencia.jpeg", "rb") as f:
+            response = client_images.images.edit(
+            model="gpt-image-1",
+            image=f,
+            prompt=prompt_img,
+            size="1024x1024"
+            )
+            
+        image_obj = response.data[0]
+        if image_obj.url:
+            return image_obj.url
+        elif image_obj.b64_json:
+            return base64.b64decode(image_obj.b64_json)
+        else:
+            st.error("⚠️ La API no devolvió URL ni imagen base64.")
+            return None
+    except Exception as e:
+        st.error(f"⚠️ Error al generar la imagen: {e}")
+        return None
