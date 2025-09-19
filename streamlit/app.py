@@ -80,11 +80,14 @@ if st.session_state.post_generado:
                 with st.spinner("🎨 Generando imagen con DALL·E..."):
                     image_result = generar_imagen_dalle(st.session_state.prompt_imagen_editado, client_images, ruta_imagen)
                 
-                if image_result:
-                    st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
-                    st.success("✅ Imagen generada con éxito")
-                else:
-                    st.error("⚠️ No se pudo generar la imagen. Verifica tu API Key y límites de facturación.")
+                    if image_result:
+                        st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
+                        st.success("✅ Imagen generada con éxito")
+                    else:
+                        st.error("⚠️ No se pudo generar la imagen. Verifica tu API Key y límites de facturación.")
 
             except Exception as e:
                 st.error(f"⚠️ Error al generar el prompt de imagen: {e}")
+
+                with st.expander("📖 Ver texto completo del post"):
+                    st.write(st.session_state.post_generado)
