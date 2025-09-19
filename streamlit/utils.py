@@ -12,8 +12,8 @@ def guardar_post(texto_post, tema_post):
     tema_post (str): Tema del post a guardar.
     """
 
-    os.makedirs("backups", exist_ok=True)  # Crea la carpeta si no existe
-    nombre_archivo = f"backups/post_{tema_post.replace(' ', '_')}.txt"
+    os.makedirs("streamlit/backups", exist_ok=True)  # Crea la carpeta si no existe
+    nombre_archivo = f"streamlit/backups/post_{tema_post.replace(' ', '_')}.txt"
     with open(nombre_archivo, "w", encoding="utf-8") as f:
         f.write(texto_post)
 
@@ -27,8 +27,8 @@ def guardar_imagen(image_result, tema_post):
     tema_post (str): Tema del post a guardar.
     """
 
-    os.makedirs("backups", exist_ok=True)
-    nombre_archivo = f"backups/imagen_{tema_post.replace(' ', '_')}.png"
+    os.makedirs("streamlit/backups", exist_ok=True)
+    nombre_archivo = f"streamlit/backups/imagen_{tema_post.replace(' ', '_')}.png"
     
     if isinstance(image_result, str) and image_result.startswith("http"):
         # Si es URL, la descargamos
