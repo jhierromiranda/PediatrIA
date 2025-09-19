@@ -4,6 +4,7 @@
 import requests
 import streamlit as st
 from openai import OpenAI
+import base64
 
 
 #########################################################################################################################
@@ -11,8 +12,10 @@ from openai import OpenAI
 #########################################################################################################################
 BRAVE_TOKEN = st.secrets.get("BRAVE_TOKEN", "")
 OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
+OPENAI_KEY_IMAGES = st.secrets.get("OPENAI_API_KEY_IMAGES", "")
 
 client = OpenAI(api_key=OPENAI_KEY)
+client_images = OpenAI(api_key=OPENAI_KEY_IMAGES)
 
 
 #########################################################################################################################
@@ -80,35 +83,35 @@ Formato del post:
     return response.choices[0].message.content
 
 
-def generar_prompt_imagen(texto_post: str) -> str:
+def generar_prompt_imagen(texto_post: str, imagen_ref: str) -> str:
     prompt_imagen = f"""
-Eres un diseñador de prompts para modelos generadores de imágenes.
-
-Objetivo:
-A partir del siguiente post, crea un prompt visual para generar una imagen que lo acompañe en redes sociales.
-
-Post:
-{text_post}
-
-Instrucciones para el prompt:
-- Representar a los personajes **SuperVita (superhéroe de Playmobil)** y **Pediatra Chus (pediatra de Playmobil)**.
-- Escena en estilo ilustración realista tipo juguete Playmobil.
-- La imagen debe reflejar el mensaje principal del post de forma clara y positiva.
-- Tono: cercano, educativo y tranquilizador.
-- No inventar datos médicos.
-- Usar exactamente el mismo estilo y personajes que en estos ejemplos (concatenar referencias aquí):
-  [EjemploImagen1_URL]
-  [EjemploImagen2_URL]
-  [EjemploImagen3_URL]
-
-Formato:
-- Prompt conciso pero descriptivo (ideal para modelos tipo DALL·E o Stable Diffusion).
+Crea una escena nueva basada en el tema: 'Deporte en el primer año de vida'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
 """
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt_imagen}]
-    )
-    return response.choices[0].message.content
+    return prompt_imagen
+
+
+
+def generar_imagen_dalle(prompt_img: str):
+    try:
+        with open("assets/referencia.jpeg", "rb") as f:
+            response = client_images.images.edit(
+            model="gpt-image-1",
+            image=f,
+            prompt=prompt_img,
+            size="1024x1024"
+            )
+            
+        image_obj = response.data[0]
+        if image_obj.url:
+            return image_obj.url
+        elif image_obj.b64_json:
+            return base64.b64decode(image_obj.b64_json)
+        else:
+            st.error("⚠️ La API no devolvió URL ni imagen base64.")
+            return None
+    except Exception as e:
+        st.error(f"⚠️ Error al generar la imagen: {e}")
+        return None
 
 
 #########################################################################################################################
@@ -145,13 +148,24 @@ if st.button("Generar post"):
             st.subheader("📌 Post generado:")
             st.write(st.session_state.post_generado)
 
-# Si ya hay post generado, mostrar botón para imagen
 if st.session_state.post_generado:
     if st.button("🎨 Generar imagen del post"):
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
-                prompt_img = generar_prompt_imagen(st.session_state.post_generado)
-                st.subheader("🎯 Prompt para generar la imagen:")
-                st.code(prompt_img, language="markdown")
+                ruta_imagen = "assets/referencia.jpeg"
+                prompt_img = generar_prompt_imagen(st.session_state.post_generado, ruta_imagen)
+
+                with st.spinner("🎨 Generando imagen con DALL·E..."):
+                    image_result = generar_imagen_dalle(prompt_img)
+                
+                    if image_result:
+                        st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
+                        st.success("✅ Imagen generada con éxito")
+                    else:
+                        st.error("⚠️ No se pudo generar la imagen. Verifica tu API Key y límites de facturación.")
+
+                with st.expander("📖 Ver texto completo del post"):
+                    st.write(st.session_state.post_generado)
+
             except Exception as e:
                 st.error(f"⚠️ Error al generar el prompt de imagen: {e}")
