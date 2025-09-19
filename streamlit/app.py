@@ -25,7 +25,8 @@ client_images = OpenAI(api_key=OPENAI_KEY_IMAGES)
 
 st.title("👶 pedIAclick")
 st.write("Generador de posts e imágenes para redes sociales basado en la AEP.")
-
+import os
+print(os.getcwd())
 
 tema_post = st.text_input("Introduce el tema del post (ej. 'Consumo de fruta en bebés')")
 
