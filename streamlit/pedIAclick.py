@@ -159,7 +159,7 @@ Crea una escena nueva basada en el tema: '{texto_post}'. Asegúrate de que los p
     return prompt_imagen
 
 
-def generar_imagen_dalle(prompt_img: str, client_images):
+def generar_imagen_dalle(prompt_img: str, client_images, ruta):
     """Genera una imagen basada en el prompt y la imagen de referencia.
 
     Args:
