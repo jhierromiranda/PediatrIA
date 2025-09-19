@@ -142,7 +142,7 @@ def generar_imagen_dalle(prompt_img: str, client_images):
         st.error(f"⚠️ Error al generar la imagen: {e}")
         return None
     
-def generar_prompt_imagen(texto_post: str, imagen_ref: str) -> str:
+def generar_prompt_imagen(texto_post: str) -> str:
     """Genera un prompt para una imagen basada en el texto del post y la imagen de referencia.
 
     Args:
