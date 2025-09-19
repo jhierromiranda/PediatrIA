@@ -121,7 +121,7 @@ Crea una escena nueva basada en el tema: '{texto_post}'. Asegúrate de que los p
 
 def generar_imagen_dalle(prompt_img: str, client_images):
     try:
-        with open("assets/referencia.jpeg", "rb") as f:
+        with open("str, "rb") as f:
             response = client_images.images.edit(
             model="gpt-image-1",
             image=f,
