@@ -63,7 +63,7 @@ if st.session_state.post_generado:
         with st.spinner("🖼️ Creando prompt para imagen..."):
             try:
                 ruta_imagen = "streamlit/assets/referencia.jpeg"
-                st.session_state.prompt_img = generar_prompt_imagen(tema_post, ruta_imagen)
+                st.session_state.prompt_img = generar_prompt_imagen(tema_post)
 
                 st.subheader("✏️ Ajusta el prompt de la imagen:")
                 st.session_state.prompt_imagen_editado = st.text_area(
@@ -73,7 +73,7 @@ if st.session_state.post_generado:
                 )
 
                 with st.spinner("🎨 Generando imagen con DALL·E..."):
-                    image_result = generar_imagen_dalle(st.session_state.prompt_imagen_editado, client_images)
+                    image_result = generar_imagen_dalle(st.session_state.prompt_imagen_editado, client_images, ruta_imagen)
                 
                 if image_result:
                     st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
