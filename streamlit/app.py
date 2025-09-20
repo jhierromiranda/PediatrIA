@@ -107,3 +107,5 @@ if st.session_state.post_generado:
 
     with st.expander("📖 Ver texto completo del post"):
         st.write(st.session_state.post_generado)
+
+    st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
