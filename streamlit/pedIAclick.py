@@ -154,7 +154,7 @@ def generar_prompt_imagen(texto_post: str) -> str:
     """
 
     prompt_imagen = f"""
-Crea una escena nueva basada en el tema: '{texto_post}'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen.
+Crea una escena nueva basada en el tema: '{texto_post}'. Asegúrate de que los personajes SuperVita y Pediatra Chus sean exactamente iguales a los de la imagen y la imagen sea realista. No incluyas texto.
 """
     return prompt_imagen
 
