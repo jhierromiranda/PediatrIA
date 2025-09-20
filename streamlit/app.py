@@ -12,7 +12,7 @@ import streamlit as st
 from openai import OpenAI
 
 from pedIAclick import buscar_info_brave, generar_post, generar_prompt_imagen, generar_prompt_imagen, generar_imagen_dalle
-from utils import guardar_post, guardar_imagen, git_commit_push#, agregar_marca_agua
+from utils import guardar_post, guardar_imagen, git_commit_push, agregar_marca_agua
 
 # CONFIG
 BRAVE_TOKEN = st.secrets.get("BRAVE_TOKEN", "")
