@@ -44,7 +44,7 @@ def guardar_imagen(image_result, tema_post):
             f.write(image_result)
 
 
-def git_commit_push(archivo):
+def git_commit_push(archivo, user_name,user_email, github_token):
     """
     Realiza un commit y push de un archivo en el repositorio de git.
 
@@ -53,5 +53,20 @@ def git_commit_push(archivo):
     """
 
     subprocess.run(["git", "add", archivo], check=True)
-    subprocess.run(["git", "commit", "-m", f"Backup {archivo}"], check=True)
-    subprocess.run(["git", "push"], check=True)
+    subprocess.run([
+        "git", "-c", f"user.name={user_name}",
+        "-c", f"user.email={user_email}",
+        "commit", "-m", f"Backup {archivo}"
+    ], check=True)
+
+    # Obtiene la URL del remoto origin
+    origin = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
+
+    # Inserta el token en la URL (solo si es https)
+    if origin.startswith("https://"):
+        auth_url = origin.replace("https://", f"https://{user_name}:{github_token}@")
+    else:
+        raise ValueError("El remoto no usa HTTPS, cámbialo con: git remote set-url origin https://github.com/usuario/repositorio.git")
+
+    # Push usando el remoto autenticado
+    subprocess.run(["git", "push", auth_url], check=True)
