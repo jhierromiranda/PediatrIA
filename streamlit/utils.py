@@ -83,7 +83,6 @@ def git_commit_push(archivo, user_name,user_email, github_token):
 
 
 def agregar_marca_agua(imagen, texto="@pediaclick", opacidad=180):
-    # Abrir imagen
     """
     Agrega una marca de agua a una imagen y la guarda en un archivo diferente.
 
