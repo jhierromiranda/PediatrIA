@@ -54,7 +54,7 @@ def git_commit_push(archivo, user_name,user_email, github_token):
 
     subprocess.run(["git", "add", archivo], check=True)
 
-    # Hacer commit (solo si hay cambios)
+    # Solo commitea si hay cambios
     status = subprocess.check_output(["git", "status", "--porcelain"], text=True).strip()
     if status:
         subprocess.run([
@@ -63,12 +63,13 @@ def git_commit_push(archivo, user_name,user_email, github_token):
             "commit", "-m", f"Backup {archivo}"
         ], check=True)
     else:
-        print("⚠️ No hay cambios nuevos para commitear")
+        print("⚠️ No hay cambios nuevos, solo se hará push.")
 
-    # Siempre hacer push (para enviar commits pendientes)
+    # Push siempre (para enviar commits pendientes)
     origin = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
     if origin.startswith("https://"):
         auth_url = origin.replace("https://", f"https://{user_name}:{github_token}@")
     else:
         raise ValueError("El remoto no usa HTTPS")
     subprocess.run(["git", "push", auth_url], check=True)
+
