@@ -48,7 +48,8 @@ if st.button("Generar post"):
         
         with st.spinner("✍️ Creando post con GPT..."):
             try:
-                post = generar_post(tema_post, llm_text, client)
+                #post = generar_post(tema_post, llm_text, client)
+                post = 'Lo he quitado para no gastar. Esto es un texto de ejemplo.'
                 st.session_state.post_generado = post
             except Exception as e:
                 st.error(f"⚠️ Error al generar el post con GPT: {e}")
