@@ -12,7 +12,7 @@ import streamlit as st
 from openai import OpenAI
 
 from pedIAclick import buscar_info_brave, generar_post, generar_prompt_imagen, generar_prompt_imagen, generar_imagen_dalle
-from utils import guardar_post, guardar_imagen, git_commit_push
+from utils import guardar_post, guardar_imagen, git_commit_push, agregar_marca_agua
 
 # CONFIG
 BRAVE_TOKEN = st.secrets.get("BRAVE_TOKEN", "")
@@ -96,6 +96,7 @@ if st.session_state.post_generado:
                     if image_result:
                         guardar_imagen(image_result, tema_post) #Guardamos la imagen en git
                         git_commit_push(f"backups/imagen_{tema_post.replace(' ', '_')}.png", user_name, user_email, github_token)
+                        image_result = agregar_marca_agua(image_result) #Agregamos marca de agua
                         st.image(image_result, caption="🖼️ Imagen generada por DALL·E")
                         st.success("✅ Imagen generada con éxito")
                     else:
