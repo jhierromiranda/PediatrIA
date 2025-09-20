@@ -53,20 +53,22 @@ def git_commit_push(archivo, user_name,user_email, github_token):
     """
 
     subprocess.run(["git", "add", archivo], check=True)
-    subprocess.run([
-        "git", "-c", f"user.name={user_name}",
-        "-c", f"user.email={user_email}",
-        "commit", "-m", f"Backup {archivo}"
-    ], check=True)
 
-    # Obtiene la URL del remoto origin
+    # Hacer commit (solo si hay cambios)
+    status = subprocess.check_output(["git", "status", "--porcelain"], text=True).strip()
+    if status:
+        subprocess.run([
+            "git", "-c", f"user.name={user_name}",
+            "-c", f"user.email={user_email}",
+            "commit", "-m", f"Backup {archivo}"
+        ], check=True)
+    else:
+        print("⚠️ No hay cambios nuevos para commitear")
+
+    # Siempre hacer push (para enviar commits pendientes)
     origin = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
-
-    # Inserta user:token en la URL
     if origin.startswith("https://"):
         auth_url = origin.replace("https://", f"https://{user_name}:{github_token}@")
     else:
-        raise ValueError("El remoto no usa HTTPS. Cámbialo con: git remote set-url origin https://github.com/usuario/repositorio.git")
-
-    # Push usando el remoto autenticado
+        raise ValueError("El remoto no usa HTTPS")
     subprocess.run(["git", "push", auth_url], check=True)
