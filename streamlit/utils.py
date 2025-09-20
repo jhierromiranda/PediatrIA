@@ -62,11 +62,11 @@ def git_commit_push(archivo, user_name,user_email, github_token):
     # Obtiene la URL del remoto origin
     origin = subprocess.check_output(["git", "remote", "get-url", "origin"], text=True).strip()
 
-    # Inserta el token en la URL (solo si es https)
+    # Inserta user:token en la URL
     if origin.startswith("https://"):
         auth_url = origin.replace("https://", f"https://{user_name}:{github_token}@")
     else:
-        raise ValueError("El remoto no usa HTTPS, cámbialo con: git remote set-url origin https://github.com/usuario/repositorio.git")
+        raise ValueError("El remoto no usa HTTPS. Cámbialo con: git remote set-url origin https://github.com/usuario/repositorio.git")
 
     # Push usando el remoto autenticado
     subprocess.run(["git", "push", auth_url], check=True)
