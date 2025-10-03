@@ -97,6 +97,14 @@ def agregar_marca_agua(imagen, texto="@pediaclick", opacidad=180):
     """
 
     
+    # Si es bytes, convertir a PIL.Image
+    if isinstance(imagen, (bytes, bytearray)):
+        imagen = Image.open(io.BytesIO(imagen))
+
+    # Asegurar canal alpha
+    imagen = imagen.convert("RGBA")
+
+    
     # Crear capa transparente para la marca de agua
     txt_layer = Image.new("RGBA", imagen.size, (255, 255, 255, 0))
     draw = ImageDraw.Draw(txt_layer)
