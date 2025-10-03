@@ -3,6 +3,7 @@ import subprocess
 import requests
 import base64
 from PIL import Image, ImageDraw, ImageFont
+import io
 
 def guardar_post(texto_post, tema_post):
     """
